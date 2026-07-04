@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <title>QUẢN LÝ KHO PHỤ TÙNG</title>
+</head>
+<body>
+    <div id="login-screen" class="container">
+        <h2>🔒 ĐĂNG NHẬP</h2>
+        <input type="password" id="pass-input" placeholder="Mật khẩu...">
+        <button onclick="checkLogin()">Truy cập</button>
+    </div>
+
+    <div id="app" class="container" style="display: none;">
+        <h1>KHO PHỤ TÙNG XE ỦI</h1>
+        <input type="text" id="search" placeholder="🔍 Tìm kiếm..." onkeyup="filterItems()">
+        <button id="add-btn" onclick="toggleForm()">➕ Thêm phụ tùng</button>
+        
+        <div id="form-container" style="display:none; margin-top: 15px;">
+            <input type="text" id="name" placeholder="Tên phụ tùng">
+            <input type="text" id="code" placeholder="Mã phụ tùng">
+            <input type="text" id="loc" placeholder="Vị trí (Kệ/Ô)">
+            <input type="file" id="img-input" accept="image/*">
+            <button onclick="addItem()" style="background: green;">Lưu vào kho</button>
+        </div>
+
+        <div id="inventory-list"></div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
