@@ -12,7 +12,7 @@ function renderInventory(data = inventory) {
     const list = document.getElementById('inventory-list');
     list.innerHTML = data.map((item, index) => `
         <div class="item-card">
-            <img src="${item.img}" class="item-img">
+            <img src="${item.img}" class="item-img" onclick="document.getElementById('fullImg').src='${item.img}'; document.getElementById('imgModal').style.display='block';">
             <div style="flex-grow: 1;">
                 <strong>${item.name}</strong><br>
                 Mã: ${item.code} | Vị trí: ${item.loc}
@@ -36,7 +36,7 @@ function addItem() {
         });
         localStorage.setItem('myInventory', JSON.stringify(inventory));
         renderInventory();
-        toggleForm(); // Đóng form sau khi lưu
+        toggleForm();
     };
     reader.readAsDataURL(fileInput.files[0]);
 }
@@ -55,4 +55,28 @@ function toggleForm() {
 function filterItems() {
     const term = document.getElementById('search').value.toLowerCase();
     renderInventory(inventory.filter(i => i.name.toLowerCase().includes(term) || i.code.toLowerCase().includes(term)));
+}
+
+function exportData() {
+    const data = localStorage.getItem('myInventory');
+    if (!data) { alert("Kho trống!"); return; }
+    const blob = new Blob([data], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'kho_phu_tung.json';
+    a.click();
+}
+
+function importData(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        localStorage.setItem('myInventory', e.target.result);
+        inventory = JSON.parse(e.target.result);
+        alert('Đã nhập dữ liệu thành công!');
+        renderInventory();
+    };
+    reader.readAsText(file);
 }
