@@ -14,6 +14,15 @@
 
     <div id="app" class="container" style="display: none;">
         <h1>KHO PHỤ TÙNG XE ỦI</h1>
+        
+        <div class="controls" style="margin: 15px 0; padding: 10px; background: #eee; border-radius: 8px;">
+            <button onclick="exportData()" style="background: #007bff; color: white;">Xuất file dữ liệu</button>
+            <label for="importFile" style="cursor: pointer; background: #28a745; color: white; padding: 5px 10px; border-radius: 4px;">
+                Nhập file dữ liệu
+            </label>
+            <input type="file" id="importFile" onchange="importData(event)" accept=".json" style="display: none;">
+        </div>
+
         <input type="text" id="search" placeholder="🔍 Tìm kiếm..." onkeyup="filterItems()">
         <button id="add-btn" onclick="toggleForm()">➕ Thêm phụ tùng</button>
         
@@ -27,6 +36,11 @@
 
         <div id="inventory-list"></div>
     </div>
+
+    <div id="imgModal" style="display:none; position:fixed; z-index:999; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); text-align:center;" onclick="this.style.display='none'">
+        <img id="fullImg" style="max-width:90%; max-height:90%; margin-top:5%; border: 2px solid white;">
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
