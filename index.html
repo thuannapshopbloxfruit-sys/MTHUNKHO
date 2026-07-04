@@ -2,7 +2,6 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <title>QUẢN LÝ KHO PHỤ TÙNG</title>
 </head>
@@ -16,13 +15,9 @@
     <div id="app" class="container" style="display: none;">
         <h1>KHO PHỤ TÙNG XE ỦI</h1>
         
-        <div id="stats-box">
-            <strong>📊 Tổng số loại phụ tùng: <span id="total-count">0</span></strong>
-        </div>
-
-        <div class="controls">
-            <button onclick="exportData()" class="btn-export">Xuất file dữ liệu</button>
-            <label for="importFile" class="btn-import">
+        <div class="controls" style="margin: 15px 0; padding: 10px; background: #eee; border-radius: 8px;">
+            <button onclick="exportData()" style="background: #007bff; color: white;">Xuất file dữ liệu</button>
+            <label for="importFile" style="cursor: pointer; background: #28a745; color: white; padding: 5px 10px; border-radius: 4px;">
                 Nhập file dữ liệu
             </label>
             <input type="file" id="importFile" onchange="importData(event)" accept=".json" style="display: none;">
@@ -31,20 +26,19 @@
         <input type="text" id="search" placeholder="🔍 Tìm kiếm..." onkeyup="filterItems()">
         <button id="add-btn" onclick="toggleForm()">➕ Thêm phụ tùng</button>
         
-        <div id="form-container" style="display:none;">
+        <div id="form-container" style="display:none; margin-top: 15px;">
             <input type="text" id="name" placeholder="Tên phụ tùng">
             <input type="text" id="code" placeholder="Mã phụ tùng">
             <input type="text" id="loc" placeholder="Vị trí (Kệ/Ô)">
             <input type="file" id="img-input" accept="image/*">
-            <button onclick="addItem()" class="btn-save">Lưu vào kho</button>
+            <button onclick="addItem()" style="background: green;">Lưu vào kho</button>
         </div>
 
         <div id="inventory-list"></div>
     </div>
 
-    <div id="imgModal" class="modal" onclick="this.style.display='none'">
-        <span class="close-modal">&times;</span>
-        <img class="modal-content" id="fullImg">
+    <div id="imgModal" style="display:none; position:fixed; z-index:999; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); text-align:center;" onclick="this.style.display='none'">
+        <img id="fullImg" style="max-width:90%; max-height:90%; margin-top:5%; border: 2px solid white;">
     </div>
 
     <script src="script.js"></script>
