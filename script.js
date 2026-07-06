@@ -28,25 +28,39 @@ function addItem() {
 
     const reader = new FileReader();
     reader.onload = function(e) {
-        const newItem = {
-            name: document.getElementById('name').value,
-            code: document.getElementById('code').value,
-            loc: document.getElementById('loc').value,
-            img: e.target.result
-        };
+        const img = new Image();
+        img.src = e.target.result;
+        img.onload = function() {
+            // Tạo một cái khung vẽ để nén ảnh
+            const canvas = document.createElement('canvas');
+            const MAX_WIDTH = 300; // Giới hạn chiều rộng ảnh còn 300px
+            const scaleSize = MAX_WIDTH / img.width;
+            canvas.width = MAX_WIDTH;
+            canvas.height = img.height * scaleSize;
 
-        try {
-            inventory.push(newItem);
-            // Thử lưu
-            localStorage.setItem('myInventory', JSON.stringify(inventory));
-            renderInventory();
-            toggleForm();
-            resetForm();
-        } catch (err) {
-            // Nếu lỗi, khả năng cao là do đầy dung lượng (QuotaExceededError)
-            alert("Lỗi: Không thể lưu! Kho hàng đã đầy (do ảnh quá nặng). Vui lòng xóa bớt ảnh cũ hoặc dùng ảnh chất lượng thấp hơn.");
-            inventory.pop(); // Xóa món vừa thêm lỗi ra khỏi mảng
-        }
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+            // Nén ảnh xuống chất lượng 0.5 (50%)
+            const compressedImg = canvas.toDataURL('image/jpeg', 0.5);
+
+            const newItem = {
+                name: document.getElementById('name').value,
+                code: document.getElementById('code').value,
+                loc: document.getElementById('loc').value,
+                img: compressedImg
+            };
+
+            try {
+                inventory.push(newItem);
+                localStorage.setItem('myInventory', JSON.stringify(inventory));
+                renderInventory();
+                toggleForm();
+                alert("Đã lưu thành công!");
+            } catch (err) {
+                alert("Kho vẫn bị đầy! Hãy xóa bớt các món hàng cũ trong danh sách.");
+            }
+        };
     };
     reader.readAsDataURL(fileInput.files[0]);
 }
