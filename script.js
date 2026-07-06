@@ -28,15 +28,25 @@ function addItem() {
 
     const reader = new FileReader();
     reader.onload = function(e) {
-        inventory.push({
+        const newItem = {
             name: document.getElementById('name').value,
             code: document.getElementById('code').value,
             loc: document.getElementById('loc').value,
             img: e.target.result
-        });
-        localStorage.setItem('myInventory', JSON.stringify(inventory));
-        renderInventory();
-        toggleForm();
+        };
+
+        try {
+            inventory.push(newItem);
+            // Thử lưu
+            localStorage.setItem('myInventory', JSON.stringify(inventory));
+            renderInventory();
+            toggleForm();
+            resetForm();
+        } catch (err) {
+            // Nếu lỗi, khả năng cao là do đầy dung lượng (QuotaExceededError)
+            alert("Lỗi: Không thể lưu! Kho hàng đã đầy (do ảnh quá nặng). Vui lòng xóa bớt ảnh cũ hoặc dùng ảnh chất lượng thấp hơn.");
+            inventory.pop(); // Xóa món vừa thêm lỗi ra khỏi mảng
+        }
     };
     reader.readAsDataURL(fileInput.files[0]);
 }
