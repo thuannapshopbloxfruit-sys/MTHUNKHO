@@ -61,7 +61,6 @@ function addItem() {
                 resetForm();
                 alert("Đã lưu thành công! Ảnh đã được nén nhẹ.");
             } catch (err) {
-                alert("Lỗi: Kho vẫn quá đầy! Hãy xóa bớt một vài món cũ trước khi thêm tiếp.");
             }
         };
     };
