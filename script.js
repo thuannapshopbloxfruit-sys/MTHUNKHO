@@ -30,25 +30,27 @@ function addItem() {
     reader.onload = function(e) {
         const img = new Image();
         img.src = e.target.result;
+        
         img.onload = function() {
-            // Tạo một cái khung vẽ để nén ảnh
+            // 1. Tạo Canvas để vẽ lại ảnh
             const canvas = document.createElement('canvas');
-            const MAX_WIDTH = 300; // Giới hạn chiều rộng ảnh còn 300px
-            const scaleSize = MAX_WIDTH / img.width;
+            const MAX_WIDTH = 500; // Giới hạn chiều rộng 500px, đủ nét để xem phụ tùng
+            const scale = MAX_WIDTH / img.width;
             canvas.width = MAX_WIDTH;
-            canvas.height = img.height * scaleSize;
+            canvas.height = img.height * scale;
 
             const ctx = canvas.getContext('2d');
             ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
-            // Nén ảnh xuống chất lượng 0.5 (50%)
-            const compressedImg = canvas.toDataURL('image/jpeg', 0.5);
+            // 2. Nén ảnh xuống chất lượng 0.7 (cân bằng giữa nét và nhẹ)
+            const compressedData = canvas.toDataURL('image/jpeg', 0.7);
 
+            // 3. Lưu dữ liệu đã nén
             const newItem = {
                 name: document.getElementById('name').value,
                 code: document.getElementById('code').value,
                 loc: document.getElementById('loc').value,
-                img: compressedImg
+                img: compressedData
             };
 
             try {
@@ -56,9 +58,10 @@ function addItem() {
                 localStorage.setItem('myInventory', JSON.stringify(inventory));
                 renderInventory();
                 toggleForm();
-                alert("Đã lưu thành công!");
+                resetForm();
+                alert("Đã lưu thành công! Ảnh đã được nén nhẹ.");
             } catch (err) {
-                alert("Kho vẫn bị đầy! Hãy xóa bớt các món hàng cũ trong danh sách.");
+                alert("Lỗi: Kho vẫn quá đầy! Hãy xóa bớt một vài món cũ trước khi thêm tiếp.");
             }
         };
     };
